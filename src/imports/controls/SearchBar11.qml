@@ -25,6 +25,8 @@ Item {
 
     property alias searchSuggestions: suggestionsListView.model
 
+    property alias searchResultsList: searchResultsList
+
     property alias suggestionDelegate: suggestionsListView.delegate
 
     property string suggestionTextRole: "text"
@@ -43,7 +45,7 @@ Item {
 
     property alias searchTextFont: searchTextField.font
 
-    property var searchResults: ListModel {}
+    property var searchResults: searchResultsList //ListModel {} //WALID
 
     property var customContentIntegration: false
 
@@ -69,6 +71,8 @@ Item {
     anchors {left: parent.left; right: parent.right; top: parent.top}
     height: 64
 
+    ListModel { id: searchResultsList} //WALID
+
     Item {
         anchors.fill: parent
         FluidControls.ToolButton {
@@ -76,7 +80,7 @@ Item {
 
             anchors.right: parent.right
             anchors.top: customContentIntegration? null: parent.top
-            anchors.margins: 8
+            anchors.margins: 0
 
             icon.source: FluidControls.Utils.iconUrl("action/search")
 
@@ -94,7 +98,7 @@ Item {
             }
             FluidControls.Card {
                 id: searchCard
-                anchors.fill: customContentIntegration? parent: null                
+                anchors.fill: customContentIntegration? parent: null
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.margins: Units.smallSpacing
@@ -109,8 +113,10 @@ Item {
                     onClicked: {
                         if (persistent)
                             search(searchTextField.text);
-                        else
+                        else {
+                            searchTextField.clear();
                             close();
+                        }
                     }
 
                     Behavior on rotation {
@@ -128,8 +134,10 @@ Item {
                     font.pixelSize: parent.height/2
                     Keys.onReturnPressed: search(text)
                     Keys.onEscapePressed: {
-                        if (!persistent)
+                        if (!persistent) {
+                            searchTextField.clear();
                             close();
+                        }
                     }
                     Keys.onDownPressed: suggestionsListView.forceActiveFocus()
                     onTextChanged: {

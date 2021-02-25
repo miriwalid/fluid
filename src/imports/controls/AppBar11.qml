@@ -125,18 +125,19 @@ QQC2.ToolBar {
 
         anchors {
             right: parent.right
-            rightMargin: 16 - leftButton.margin
+            rightMargin: 0
         }
 
         height: appBar.height
 
-        spacing: 24 - 2 * leftButton.margin
 
         Repeater {
+            id: repeater
             model: appBar.actions.length > appBar.maxActionCount && appBar.maxActionCount > 0
                    ? appBar.maxActionCount : appBar.actions.length
             delegate: FluidControls.ToolButton {
                 id: actionButton
+                width: 30
 
                 QQC2.ToolTip.visible: QQC2.ToolTip.text !== "" && !overflowMenu.visible && (FluidCore.Device.isMobile ? pressed : hovered)
                 QQC2.ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
@@ -224,7 +225,7 @@ QQC2.ToolBar {
         anchors.left: parent.left
         anchors.right: actionsRow.left
         anchors.leftMargin: 16 + (leftButton.showing ? FluidCore.Device.gridUnit - leftButton.margin : 0)
-        anchors.rightMargin: 16
+        anchors.rightMargin: 0
         anchors.verticalCenter: actionsRow.verticalCenter
 
         height: parent.height
@@ -255,3 +256,9 @@ QQC2.ToolBar {
             overflowMenu.open();
     }
 }
+
+/*##^##
+Designer {
+    D{i:0;formeditorZoom:16}
+}
+##^##*/
